@@ -1,0 +1,19 @@
+{
+  "name": "basework",
+  "version": "0.0.1",
+  "description": "An un-opinionated base framework for your web project",
+  "private": true,
+  "main": "bootstrap.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "web",
+    "framework",
+    "webpack",
+    "parcel",
+    "rollup"
+  ],
+  "author": "Ty Hopp",
+  "license": "ISC"
+}
