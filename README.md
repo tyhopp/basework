@@ -8,7 +8,7 @@ An un-opinionated base framework for web projects.
 - **Stay effortlessly performant.** Its a massive effort to properly implement concepts like code-splitting, resource preload/prefetching, and prerendering during the build step. Instead of rolling your own solution, Basework can handle it for you.
 
 ## Usage
-- Install the basework cli with `npm install -g basework-cli`
+- Install the [Basework CLI](https://github.com/tyhopp/basework-cli) with `npm install -g basework-cli`
 - Create a new project with `basework new my-new-site`
 - Run the project locally with `basework start` to start development, or
 - Build the project locally with `basework build` to see how the project is built.
