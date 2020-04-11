@@ -16,4 +16,6 @@ const bootstrap = async () => {
   await prerender(); // Load site pages in a headless browser to prerender html
 }
 
-bootstrap();
+module.exports = {
+  bootstrap
+}

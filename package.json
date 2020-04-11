@@ -1,7 +1,7 @@
 {
   "name": "basework",
   "version": "0.0.1",
-  "description": "An un-opinionated base framework for your web project",
+  "description": "An un-opinionated base framework for web projects",
   "private": true,
   "main": "bootstrap.js",
   "scripts": {
@@ -15,5 +15,28 @@
     "rollup"
   ],
   "author": "Ty Hopp",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.4.2",
+    "dotenv": "^8.2.0",
+    "file-loader": "^5.0.2",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "node-fetch": "^2.6.0",
+    "puppeteer": "^2.1.1",
+    "rehype-parse": "^6.0.2",
+    "rehype-stringify": "^6.0.1",
+    "remark-parse": "^7.0.2",
+    "remark-rehype": "^5.0.0",
+    "unified": "^8.4.2",
+    "unist-util-visit": "^2.0.2",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  }
 }

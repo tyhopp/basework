@@ -1,7 +1,7 @@
-const { pages } = require('../../src/routes');
-const { createPage } = require('./create-page');
 const fs = require('fs');
 const path = require('path');
+const { createPage } = require('./create-page');
+const { pages } = require(path.resolve('src/routes'));
 
 const getTemplate = template => {
   return new Promise((resolve, reject) => {
@@ -28,7 +28,7 @@ const createFile = (page, html) => {
 
 const createPages = async () => {
   for (const page of pages) {
-    const groups = require('../../dist/webpack.stats.js').stats;
+    const groups = require(path.resolve('dist/webpack.stats.js')).stats;
     if (!groups[page]) {
       console.error(`No webpack stats found for ${page}`);
     }

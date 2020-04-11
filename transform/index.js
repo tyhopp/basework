@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const { pages } = require('../../src/routes');
+const { pages } = require(path.resolve('src/routes'));
 const { markdownToHtml } = require('./markdown-to-html');
 
 const getPageData = page => {

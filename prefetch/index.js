@@ -3,7 +3,7 @@ const fs = require('fs');
 const parser = require('@babel/parser');
 const traverse = require('@babel/traverse').default;
 const generate = require('@babel/generator').default;
-const { pages } = require('../../src/routes');
+const { pages } = require(path.resolve('src/routes'));
 
 const getPageJavaScript = page => {
   return new Promise((resolve, reject) => {

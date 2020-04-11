@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const path = require('path');
 const fs = require('fs');
-const { pages } = require('../../src/routes');
+const { pages } = require(path.resolve('src/routes'));
 
 /**
  * Runs Puppeteer to prerender all pages so that:
