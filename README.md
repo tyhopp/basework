@@ -14,9 +14,13 @@ An un-opinionated base framework for web projects. Basework helps you reduce you
 
 ## Usage
 - Install the [Basework CLI](https://github.com/tyhopp/basework-cli) with `npm install -g basework-cli`
-- Create a new project with `basework new my-new-site`
-- Run the project locally with `basework start` to start development, or
-- Build the project locally with `basework build` to see how the project is built.
+- Create a new project with `basework new`
+- Enter the project root with `cd basework-example`
+- Install the project packages with `npm i`
+- Run the project locally with `basework start` to start development
+- Open [localhost:8000](http://localhost:8000)
+
+Additionally, build the project locally with `basework build` and check the resulting dist folder to see what the project output looks like.
 
 ## Basework files
 There are two files you can add to the root of your project to change the behavior of Basework:
