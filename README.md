@@ -100,7 +100,7 @@ When you run `basework start`, a few of these steps are run, and a local develop
 - [x] Refactor dev server for basic functionality
 - [x] Create an example project
 - [x] Add a license file
-- [ ] Publish on npm
+- [x] Publish on npm
 - [ ] Proper hot module replacement in the dev server
 - [ ] Webpack config differentiated by environment
 - [ ] Improve create pages function to support meta tags
