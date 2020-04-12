@@ -61,7 +61,7 @@ When you run `basework start`, a few of these steps are run, and a local develop
 - [x] Extract out any remaining target project-specific logic
 - [ ] Consume `basework-config.js` from projects
 - [ ] Consume `basework-api.js` from projects
-- [ ] Refactor dev server implementation
+- [x] Refactor dev server for basic functionality
 - [ ] Proper hot module replacement in the dev server
 - [ ] Webpack config differentiated by environment
 - [ ] Improve create pages function to support meta tags

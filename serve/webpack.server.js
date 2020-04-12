@@ -6,18 +6,18 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const createConfig = require('./webpack.config.js');
-const { prepare } = require('./scripts/prepare');
-const { prefetch } = require('./scripts/prefetch');
-const { transform } = require('./scripts/transform');
-const { createPages } = require('./scripts/create');
-const { extractStats } = require('./scripts/bundle/extract-stats');
+const createConfig = require('../bundle/webpack.config.js');
+const { prepare } = require('../prepare');
+const { prefetch } = require('../prefetch');
+const { transform } = require('../transform');
+const { createPages } = require('../create');
+const { extractStats } = require('../bundle/extract-stats');
 
 const getFile = file => {
   return new Promise((resolve, reject) => {
     fs.readFile(path.resolve(`dist${file}`), (error, buffer) => {
       if (error || !buffer) {
-        reject(error)
+        reject(error);
       }
       resolve(buffer.toString());
     });
@@ -35,7 +35,7 @@ const getHtml = async (url, response) => {
   return await getFile(url);
 }
 
-const serve = async () => {
+const createWebpackServer = async () => {
   const config = await createConfig();
   const compiler = webpack(config);
 
@@ -46,13 +46,22 @@ const serve = async () => {
   }));
 
   app.use((request, response) => {
-    const { routes } = require('./src/routes');
+    const { routes } = require(path.resolve('src/routes'));
     const { url } = request;
 
+    if (!fs.existsSync(path.resolve(`dist${url}`))) {
+      response.send('');
+      return;
+    }
+
     if (url.includes('json')) {
-      getFile(url).then(file => {
-        response.send(file);
-      });
+      getFile(url)
+        .then(file => {
+          response.send(file);
+        })
+        .catch(error => {
+          console.error(`[Error] - Dev server encountered an error:\n${error}`);
+        })
     }
 
     if (routes[url]) {
@@ -60,11 +69,15 @@ const serve = async () => {
         response.send(html);
       });
     }
+
   });
 
   app.listen(8000, function () {
-    console.log('Dev server started at port 8000\n');
+    console.log('Basework dev server started at port 8000\n');
+    // TODO - Open browser automatically
   });
 }
 
-serve();
+module.exports = {
+  createWebpackServer
+}
