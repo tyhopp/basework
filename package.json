@@ -1,5 +1,5 @@
 {
-  "name": "basework",
+  "name": "basework-core",
   "version": "0.0.1",
   "description": "An un-opinionated base framework for web projects",
   "author": "Ty Hopp",
