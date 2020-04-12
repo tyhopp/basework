@@ -2,6 +2,8 @@
 # Basework 🏗
 An un-opinionated base framework for web projects. Basework helps you reduce your exposure to tooling and stay focused on development.
 
+🚨 Disclaimer - This project is very early stage and its interfaces are not yet stable. Do not use Basework in production.
+
 - **Avoid bundler lock-in.** Architecting your project around a single bundler binds your source code to your tools. Basework decouples this arrangement by making switching bundlers as easy as changing a value in the Basework config.
 
 - **Avoid framework lock-in.** Leveraging frameworks like Gatsby gives you unparalleled functionality out of the box, but also ties you to React. If you've ever wondered "Can I use Gatsby *without* React?", the answer is yes - try Basework.

@@ -10,7 +10,7 @@ const createWebpackConfig = require(path.resolve(__dirname, '../bundle/webpack/w
 const { prepare } = require(path.resolve(__dirname, '../prepare'));
 const { prefetch } = require(path.resolve(__dirname, '../prefetch'));
 const { transform } = require(path.resolve(__dirname, '../transform'));
-const { createPages } = require(path.resolve(__dirname, '../create'));
+const { create } = require(path.resolve(__dirname, '../create'));
 const { extractStats } = require(path.resolve(__dirname, '../bundle/webpack/extract-stats'));
 
 const getFile = file => {
@@ -31,7 +31,7 @@ const getHtml = async (url, response) => {
   await transform();
   const { compilation } = response.locals.webpackStats;
   await extractStats(compilation);
-  await createPages();
+  await create();
   return await getFile(url);
 }
 
