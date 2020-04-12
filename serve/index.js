@@ -1,4 +1,5 @@
-const { createWebpackServer } = require('./webpack.server.js');
+const path = require('path');
+const { createWebpackServer } = require(path.resolve(__dirname, './webpack-server'));
 
 // TODO - Generalize dev server to support all bundlers
 const serve = async () => {

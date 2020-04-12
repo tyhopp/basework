@@ -6,12 +6,12 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const createConfig = require('../bundle/webpack.config.js');
-const { prepare } = require('../prepare');
-const { prefetch } = require('../prefetch');
-const { transform } = require('../transform');
-const { createPages } = require('../create');
-const { extractStats } = require('../bundle/extract-stats');
+const createWebpackConfig = require(path.resolve(__dirname, '../bundle/webpack/webpack-config'));
+const { prepare } = require(path.resolve(__dirname, '../prepare'));
+const { prefetch } = require(path.resolve(__dirname, '../prefetch'));
+const { transform } = require(path.resolve(__dirname, '../transform'));
+const { createPages } = require(path.resolve(__dirname, '../create'));
+const { extractStats } = require(path.resolve(__dirname, '../bundle/webpack/extract-stats'));
 
 const getFile = file => {
   return new Promise((resolve, reject) => {
@@ -36,7 +36,7 @@ const getHtml = async (url, response) => {
 }
 
 const createWebpackServer = async () => {
-  const config = await createConfig();
+  const config = await createWebpackConfig();
   const compiler = webpack(config);
 
   app.use(webpackDevMiddleware(compiler, {

@@ -83,6 +83,7 @@ When you run `basework start`, a few of these steps are run, and a local develop
 - [ ] Publish on npm
 
 ## Longer term goals
+- [ ] Support parcel and rollup
 - [ ] A single generalized dev server that works with any bundler
 - [ ] Reduce dependency vulnerabilities to zero
 - [ ] Unit and integration tests

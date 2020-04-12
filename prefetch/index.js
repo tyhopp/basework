@@ -4,6 +4,7 @@ const parser = require('@babel/parser');
 const traverse = require('@babel/traverse').default;
 const generate = require('@babel/generator').default;
 const { pages } = require(path.resolve('src/routes'));
+const { getBaseworkConfig } = require(path.resolve(__dirname, '../utils/get-basework-config'));
 
 const getPageJavaScript = page => {
   return new Promise((resolve, reject) => {
@@ -78,6 +79,10 @@ const createDataFile = page => {
 }
 
 const prefetch = async () => {
+  const { prefetch } = await getBaseworkConfig();
+  if (!prefetch) {
+    return;
+  }
   for (const page of pages) {
     const buffer = await getPageJavaScript(page);
     await parsePrefetchMethod(page, buffer);
