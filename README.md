@@ -94,15 +94,16 @@ When you run `basework start`, a few of these steps are run, and a local develop
 - [x] Consume `basework-config.js` from projects
 - [x] Consume `basework-api.js` from projects
 - [x] Refactor dev server for basic functionality
-- [ ] Create an example project
-- [ ] Add a license file
+- [x] Create an example project
+- [x] Add a license file
 - [ ] Publish on npm
 - [ ] Proper hot module replacement in the dev server
 - [ ] Webpack config differentiated by environment
 - [ ] Improve create pages function to support meta tags
+- [ ] Support parcel and rollup
+- [ ] Improve dev server
 
 ## Longer term goals
-- [ ] Support parcel and rollup
 - [ ] Create a single generalized dev server that works with any bundler
 - [ ] Reduce dependency vulnerabilities to zero
 - [ ] Add unit and integration tests
