@@ -36,7 +36,7 @@ const dig = (ref, section, index, sections, transformationFn) => {
   }
 }
 
-// TODO - Refactor
+// TODO - Refactor, allow apps to add own transformations
 const performTransformations = buffer => {
   const stringData = buffer.toString();
   let objectData = JSON.parse(stringData);
