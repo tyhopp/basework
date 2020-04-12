@@ -26,7 +26,8 @@ const createFile = (page, html) => {
   });
 }
 
-const createPages = async () => {
+// Create pages
+const create = async () => {
   for (const page of pages) {
     const groups = require(path.resolve('dist/webpack.stats.js')).stats;
     if (!groups[page]) {
@@ -40,5 +41,5 @@ const createPages = async () => {
 }
 
 module.exports = {
-  createPages
+  create
 }

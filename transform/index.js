@@ -2,7 +2,6 @@ const path = require('path');
 const fs = require('fs');
 const { pages } = require(path.resolve('src/routes'));
 const { markdownToHtml } = require('./markdown-to-html');
-const { getBaseworkConfig } = require(path.resolve(__dirname, '../utils/get-basework-config'));
 
 const getPageData = page => {
   return new Promise((resolve, reject) => {
@@ -85,10 +84,6 @@ const createDataFile = (page, final) => {
 }
 
 const transform = async () => {
-  const { prefetch } = await getBaseworkConfig();
-  if (!prefetch) {
-    return;
-  }
   for (const page of pages) {
     const buffer = await getPageData(page);
     const final = await performTransformations(buffer);

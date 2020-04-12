@@ -2,7 +2,6 @@ const puppeteer = require('puppeteer');
 const path = require('path');
 const fs = require('fs');
 const { pages } = require(path.resolve('src/routes'));
-const { getBaseworkConfig } = require(path.resolve(__dirname, '../utils/get-basework-config'));
 
 /**
  * Runs Puppeteer to prerender all pages so that:
@@ -10,10 +9,6 @@ const { getBaseworkConfig } = require(path.resolve(__dirname, '../utils/get-base
  *  - Loading times are as fast as possible
  */
 const prerender = async () => {
-  const { prerender } = await getBaseworkConfig();
-  if (!prerender) {
-    return;
-  }
   for (const page of pages) {
     const browser = await puppeteer.launch({
       headless: true,

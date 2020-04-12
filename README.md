@@ -1,14 +1,14 @@
 
 # Basework 🏗
-An un-opinionated base framework for web projects.
+An un-opinionated base framework for web projects. Basework helps you reduce your exposure to tooling and stay focused on development.
 
-- **Avoid bundler lock-in.** Architecting your project around a single bundler binds your source code to your tooling. Basework decouples this arrangement by making switching bundlers as easy as changing a value in a config.
+- **Avoid bundler lock-in.** Architecting your project around a single bundler binds your source code to your tools. Basework decouples this arrangement by making switching bundlers as easy as changing a value in the Basework config.
 
-- **Avoid framework lock-in.** Leveraging frameworks like Gatsby gives you unparalleled functionality out of the box, but also ties you to React. If you've ever wondered "Can I use Gatsby without React?", the answer is yes - try Basework.
+- **Avoid framework lock-in.** Leveraging frameworks like Gatsby gives you unparalleled functionality out of the box, but also ties you to React. If you've ever wondered "Can I use Gatsby *without* React?", the answer is yes - try Basework.
 
-- **Stay effortlessly performant.** Its a massive effort to properly implement advanced concepts like code-splitting, resource preload/prefetching, and prerendering. Instead of spending the time to roll your own solutions, Basework can handle it for you.
+- **Be effortlessly performant.** It's a massive effort to properly implement advanced concepts like code-splitting, resource preload/prefetching, and prerendering. Instead of spending time to roll your own solutions, Basework can handle it for you.
 
-- **Trivial migration.** If circumstances demand you migrate away from Basework, its as simple as `npm uninstall -g basework-cli` and deleting a few `basework-*` files. With Basework your project is untouched by tooling, making it trivially easy to swap back to a traditional setup if you need to.
+- **Maintain flexibility.** If you need to extend Basework, you can easily add your own custom build steps in the Basework config. If circumstances demand you migrate away from Basework, its as simple as running `npm uninstall -g basework-cli` and deleting a few `basework-*` files.
 
 ## Usage
 - Install the [Basework CLI](https://github.com/tyhopp/basework-cli) with `npm install -g basework-cli`
@@ -23,8 +23,15 @@ There are two files you can add to the root of your project to change the behavi
 	```js
 	const baseworkConfig = () => ({
     bundler: 'webpack',
-    prefetch: true,
-    prerender: true
+    build: [
+      'prepare',
+      'prefetch',
+      'transform',
+      'bundle',
+      'create',
+      'createSubPages',
+      'prerender'
+    ]
   });
 
   module.exports = baseworkConfig;
@@ -35,14 +42,19 @@ There are two files you can add to the root of your project to change the behavi
   ```js
   module.exports = {
     bundler: 'webpack',
-    prefetch: true,
-    prerender: true
+    build: [
+      'prepare',
+      'prefetch',
+      'transform',
+      'bundle',
+      'create',
+      'createSubPages',
+      'prerender'
+    ]
   };
   ```
 
-- `basework-api.js`, which allows you to add custom build steps to the build process. For example, maybe you want to create additional sub pages at `notes/my-blog-post` instead of just your `notes` page. You can achieve this here.
-
-TODO - Add more documentation when api is refined
+- `basework-api.js`, which allows you to add custom build steps to the build process. For example, maybe you want to create additional sub pages at `notes/my-blog-post` instead of just your `notes` page. You can define this functionality here and add the exported function name to the build steps in `basework-config.js`.
 
 ## Performance features
 
@@ -64,7 +76,11 @@ TODO - Add more documentation when api is refined
   - Removes flash of white as the page reloads on navigation
 
 ## Under the hood
-When you run `basework build`, Basework performs a series of asynchronous build steps that you can see clearly in the [bootstrap.js](bootstrap.js) file. Rather than listing them here, it's much easier to view the file directly.
+When you run `basework build`, Basework performs a series of asynchronous build steps defined in your `basework-config.js` inside the [bootstrap.js](bootstrap.js) file. For each build step defined in the Basework config, the bootstrap file:
+
+  1. Checks if its a custom build step defined in `basework-api.js`, and if so, calls that function.
+  2. Checks if its a core Basework function, and if so, calls that function.
+  3. If its neither of these, logs an error for an unfound build step function.
 
 When you run `basework start`, a few of these steps are run, and a local development server is started so you can easily change and rebuild your code on the fly.
 
