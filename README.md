@@ -18,7 +18,7 @@ An un-opinionated base framework for web projects. Basework helps you reduce you
 
 ## Basework files
 There are two files you can add to the root of your project to change the behavior of Basework:
-- `basework-config.js`, which allows you to change bundlers or toggle features. It would look something like this if you want to export a function:
+- `basework-config.js`, which allows you to change bundlers and customize the build process. It can export a function:
 
 	```js
 	const baseworkConfig = () => ({
@@ -37,7 +37,7 @@ There are two files you can add to the root of your project to change the behavi
   module.exports = baseworkConfig;
 	```
 
-  or like this if you want to export a plain object:
+  or export a plain object:
 
   ```js
   module.exports = {
@@ -54,7 +54,7 @@ There are two files you can add to the root of your project to change the behavi
   };
   ```
 
-- `basework-api.js`, which allows you to add custom build steps to the build process. For example, maybe you want to create additional sub pages at `notes/my-blog-post` instead of just your `notes` page. You can define this functionality here and add the exported function name to the build steps in `basework-config.js`.
+- `basework-api.js`, which allows you to define custom build steps to be run in the build process. For example, maybe you want to create additional sub pages at `notes/my-blog-post` instead of just your `notes` page. You can define this functionality here and add the exported function name to the build steps in `basework-config.js`.
 
 ## Performance features
 
@@ -78,9 +78,9 @@ There are two files you can add to the root of your project to change the behavi
 ## Under the hood
 When you run `basework build`, Basework performs a series of asynchronous build steps defined in your `basework-config.js` inside the [bootstrap.js](bootstrap.js) file. For each build step defined in the Basework config, the bootstrap file:
 
-  1. Checks if its a custom build step defined in `basework-api.js`, and if so, calls that function.
-  2. Checks if its a core Basework function, and if so, calls that function.
-  3. If its neither of these, logs an error for an unfound build step function.
+  1. First checks if its a custom build step defined in `basework-api.js`, and if so, calls that function.
+  2. Then, checks if its a core Basework function, and if so, calls that function.
+  3. Finally, if its neither of these, logs an error for an unfound function and moves on to the next step.
 
 When you run `basework start`, a few of these steps are run, and a local development server is started so you can easily change and rebuild your code on the fly.
 
@@ -90,23 +90,24 @@ When you run `basework start`, a few of these steps are run, and a local develop
 - [x] Create basic CLI
 - [x] Extract out any remaining target project-specific logic
 - [x] Consume `basework-config.js` from projects
-- [ ] Consume `basework-api.js` from projects
+- [x] Consume `basework-api.js` from projects
 - [x] Refactor dev server for basic functionality
+- [ ] Create an example project
+- [ ] Add a license file
+- [ ] Publish on npm
 - [ ] Proper hot module replacement in the dev server
 - [ ] Webpack config differentiated by environment
 - [ ] Improve create pages function to support meta tags
-- [ ] Create example project
-- [ ] Publish on npm
 
 ## Longer term goals
 - [ ] Support parcel and rollup
-- [ ] A single generalized dev server that works with any bundler
+- [ ] Create a single generalized dev server that works with any bundler
 - [ ] Reduce dependency vulnerabilities to zero
-- [ ] Unit and integration tests
-- [ ] Proper CI/CD
-- [ ] Project generator for web components, React and Vue
-- [ ] An optional `basework-router` implementation for webcomponents, React and Vue
-- [ ] A dedicated documentation website
+- [ ] Add unit and integration tests
+- [ ] Add proper CI/CD
+- [ ] Create a project generator for React and Vue
+- [ ] Introduce an optional `basework-router` implementation for web components, React and Vue
+- [ ] Build a dedicated documentation website
 
 ## Notes
 This project is heavily inspired by [Gatsby](https://gatsby.org).
