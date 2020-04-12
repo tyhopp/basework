@@ -2,7 +2,7 @@
   "name": "basework",
   "version": "0.0.1",
   "description": "An un-opinionated base framework for web projects",
-  "private": true,
+  "author": "Ty Hopp",
   "main": "bootstrap.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,7 +14,6 @@
     "parcel",
     "rollup"
   ],
-  "author": "Ty Hopp",
   "license": "MIT",
   "dependencies": {
     "@babel/core": "^7.8.4",
