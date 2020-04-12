@@ -1,9 +1,9 @@
 const webpack = require('webpack');
 const { extractStats } = require('./extract-stats');
 
-const runWebpack = config => {
+const runWebpack = webpackConfig => {
   return new Promise((resolve, reject) => {
-    webpack(config).run((error, stats) => {
+    webpack(webpackConfig).run((error, stats) => {
       if (error) {
         reject(error);
       }
@@ -26,6 +26,4 @@ const runWebpack = config => {
   });
 }
 
-module.exports = {
-  runWebpack
-}
+module.exports = runWebpack;

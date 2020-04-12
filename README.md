@@ -18,13 +18,27 @@ An un-opinionated base framework for web projects.
 
 ## Basework files
 There are two files you can add to the root of your project to change the behavior of Basework:
-- `basework-config.yaml`, which allows you to change bundlers or toggle features and would look something like this:
+- `basework-config.js`, which allows you to change bundlers or toggle features. It would look something like this if you want to export a function:
 
-	```yaml
-	bundler: webpack|parcel|rollup
-	prefetch: true
-	prerender: true
+	```js
+	const baseworkConfig = () => ({
+    bundler: 'webpack',
+    prefetch: true,
+    prerender: true
+  });
+
+  module.exports = baseworkConfig;
 	```
+
+  or like this if you want to export a plain object:
+
+  ```js
+  module.exports = {
+    bundler: 'webpack',
+    prefetch: true,
+    prerender: true
+  };
+  ```
 
 - `basework-api.js`, which allows you to add custom build steps to the build process. For example, maybe you want to create additional sub pages at `notes/my-blog-post` instead of just your `notes` page. You can achieve this here.
 
@@ -59,7 +73,7 @@ When you run `basework start`, a few of these steps are run, and a local develop
 - [x] Connect projects together locally with `npm pack` and `npm i`
 - [x] Create basic CLI
 - [x] Extract out any remaining target project-specific logic
-- [ ] Consume `basework-config.js` from projects
+- [x] Consume `basework-config.js` from projects
 - [ ] Consume `basework-api.js` from projects
 - [x] Refactor dev server for basic functionality
 - [ ] Proper hot module replacement in the dev server

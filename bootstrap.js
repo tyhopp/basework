@@ -12,8 +12,8 @@ const bootstrap = async () => {
   await prefetch(); // Make ahead-of-time network requests and save data locally
   await transform(); // Perform transformations on prefetched data (e.g. markdown to html)
   await bundle(); // Bundle site resources using webpack
-  await createPages(); // Create html pages with referenced assets
-  await prerender(); // Load site pages in a headless browser to prerender html
+  // await createPages(); // Create html pages with referenced assets
+  // await prerender(); // Load site pages in a headless browser to prerender html
 }
 
 module.exports = {

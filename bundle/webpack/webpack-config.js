@@ -4,7 +4,7 @@ const path = require('path');
 /**
  * Main function to generate webpack config.
  */
-const createConfig = async () => {
+const createWebpackConfig = async () => {
   return {
     mode: 'development', // TODO - Create different builds for different modes
     entry: {
@@ -21,7 +21,7 @@ const createConfig = async () => {
       new MiniCssExtractPlugin()
     ],
     resolve: {
-      modules: [path.resolve(__dirname, '../node_modules'), 'node_modules'],
+      modules: [path.resolve(__dirname, '../../node_modules'), 'node_modules'],
       alias: {
         src: path.resolve('src/'),
         pages: path.resolve('src/pages/'),
@@ -89,4 +89,4 @@ const createConfig = async () => {
   }
 }
 
-module.exports = createConfig;
+module.exports = createWebpackConfig;
