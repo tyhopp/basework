@@ -1,6 +1,6 @@
 {
   "name": "basework-core",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "An un-opinionated base framework for web projects",
   "author": "Ty Hopp",
   "main": "bootstrap.js",
@@ -25,9 +25,9 @@
     "file-loader": "^5.0.2",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
+    "jsdom": "^16.2.2",
     "mini-css-extract-plugin": "^0.9.0",
     "node-fetch": "^2.6.0",
-    "puppeteer": "^2.1.1",
     "rehype-parse": "^6.0.2",
     "rehype-stringify": "^6.0.1",
     "remark-parse": "^7.0.2",
