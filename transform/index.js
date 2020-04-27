@@ -1,6 +1,5 @@
 const path = require('path');
 const fs = require('fs');
-const { pages } = require(path.resolve('src/routes'));
 const { markdownToHtml } = require('./markdown-to-html');
 
 const getPageData = page => {
@@ -10,7 +9,7 @@ const getPageData = page => {
         if (error) {
           reject(error)
         }
-        resolve(json);
+        resolve(json.toString());
       });
     } catch (error) {
       resolve(); // Do nothing, there is no page data
@@ -37,9 +36,8 @@ const dig = (ref, section, index, sections, transformationFn) => {
 }
 
 // TODO - Refactor, allow apps to add own transformations
-const performTransformations = buffer => {
-  const stringData = buffer.toString();
-  let objectData = JSON.parse(stringData);
+const performTransformations = data => {
+  let objectData = JSON.parse(data);
   const transformationObject = objectData.transformations || {};
   if (!Object.keys(transformationObject).length) {
     return JSON.stringify(objectData);
@@ -83,12 +81,10 @@ const createDataFile = (page, final) => {
   })
 }
 
-const transform = async () => {
-  for (const page of pages) {
-    const buffer = await getPageData(page);
-    const final = await performTransformations(buffer);
-    await createDataFile(page, final);
-  };
+const transform = async ({ page }) => {
+  const data = await getPageData(page);
+  const final = await performTransformations(data);
+  await createDataFile(page, final);
 }
 
 module.exports = {
