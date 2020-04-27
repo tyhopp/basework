@@ -1,11 +1,11 @@
-const { createRoutes } = require('./create-routes');
+const { createPageIndex } = require('./create-page-index');
 
 /**
- * Does all the necessary preparation required to bundle the site.
+ * Does all the necessary preparation required for other build steps to run
  */
 const prepare = async () => {
-  const routes = await createRoutes();
-  return routes;
+  const pages = await createPageIndex();
+  return pages;
 }
 
 module.exports = {

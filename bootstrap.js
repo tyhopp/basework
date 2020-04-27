@@ -3,6 +3,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 const { getBaseworkConfig } = require(path.resolve(__dirname, 'utils/get-basework-config'));
 const { getBaseworkApis } = require(path.resolve(__dirname, 'utils/get-basework-apis'));
+const { runBaseworkStep } = require(path.resolve(__dirname, 'utils/run-basework-step'));
 
 const bootstrap = async () => {
   dotenv.config();
@@ -23,18 +24,22 @@ const bootstrap = async () => {
     steps = build;
   }
 
-  for (const step of steps) {
+  buildLoop: for (const step of steps) {
     // Check if step exists in user-defined Basework apis
     const apis = await getBaseworkApis();
     if (apis[step] && typeof apis[step] === 'function') {
       await apis[step]();
-      continue;
+      continue buildLoop;
     }
 
     // Check if step exists in Basework core
     if (fs.existsSync(path.resolve(__dirname, step))) {
-      await require(path.resolve(__dirname, step))[step]();
-      continue;
+      if (step === 'prepare') {
+        await require(path.resolve(__dirname, step))[step]();
+        continue buildLoop;
+      }
+      await runBaseworkStep(step);
+      continue buildLoop;
     }
 
     // If not, log the missing build step

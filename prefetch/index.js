@@ -4,12 +4,12 @@ const parser = require('@babel/parser');
 const traverse = require('@babel/traverse').default;
 const generate = require('@babel/generator').default;
 
-const getPageJavaScript = pathToPage => {
-  if (!pathToPage) {
+const getPageJavaScript = source => {
+  if (!source) {
     return null;
   }
   return new Promise((resolve, reject) => {
-    fs.readFile(pathToPage, (error, js) => {
+    fs.readFile(source, (error, js) => {
       if (error) {
         reject(error)
       }
@@ -61,7 +61,7 @@ const parsePrefetchMethod = async (page, code) => {
 
   const ast = await createAst();
   await traverseTree(ast);
-  const shouldPrefetch = await checkPrefetch();
+  const shouldPrefetch = await checkPrefetch(page);
   return shouldPrefetch;
 }
 
@@ -81,7 +81,7 @@ const createDataFile = (page, data) => {
   });
 }
 
-const prefetch = async ({ page, pathToPage, data = null }) => {
+const prefetch = async ({ page, source, data = null }) => {
   
   // If data is passed, create data file and return
   if (data) {
@@ -90,7 +90,7 @@ const prefetch = async ({ page, pathToPage, data = null }) => {
   }
 
   // Otherwise, ry to run compiler and run prefetch code
-  const code = await getPageJavaScript(pathToPage);
+  const code = await getPageJavaScript(source);
   const shouldPrefetch = await parsePrefetchMethod(page, code);
   if (shouldPrefetch) {
     const data = await makePrefetch(page);

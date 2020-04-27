@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 
-  const getPages = () => {
+  const getSourcePages = () => {
     return new Promise((resolve, reject) => {
       fs.readdir(path.resolve('src/pages'), (error, pages) => {
         if (error) {
@@ -12,17 +12,17 @@ const fs = require('fs');
     });
   }
 
-  const createRouteFile = routes => {
-    const routesFile = `
-      const routes = ${JSON.stringify(routes)};
+  const createPageIndexFile = pages => {
+    const pageIndexFile = `
+      const pages = ${JSON.stringify(pages)};
 
       module.exports = {
-        routes
+        pages
       }
     `;
 
     return new Promise((resolve, reject) => {
-        fs.writeFile(path.resolve('src', 'routes.js'), routesFile, error => {
+      fs.writeFile(path.resolve('src', 'basework-index.js'), pageIndexFile, error => {
         if (error) {
           reject(error);
         }
@@ -31,14 +31,12 @@ const fs = require('fs');
     });
   }
 
-  const createRoutes = async () => {
-    let pages = await getPages();
-    await createRouteFile(pages);
-    
-    console.log('Routes created');
-    return routes;
+  const createPageIndex = async () => {
+    let pages = await getSourcePages();
+    await createPageIndexFile(pages);
+    console.log('Basework index created');
   }
 
 module.exports = {
-  createRoutes
+  createPageIndex
 }
