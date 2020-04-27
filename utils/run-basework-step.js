@@ -1,4 +1,3 @@
-const fs = require('fs');
 const path = require('path');
 
 const runBaseworkStep = async (step) => {
@@ -9,9 +8,14 @@ const runBaseworkStep = async (step) => {
     stepTriage: switch (step) {
       case 'prefetch':
         arguments = {
-          page, // Name of the page, e.g. notes
-          source: path.resolve(`./src/pages/${page}/index.js`), // Absolute path to page source code
-          data: null // Optional data to create the json file with
+          page,
+          source: path.resolve(`./src/pages/${page}/index.js`),
+          data: null
+        };
+        break stepTriage;
+      case 'transform':
+        arguments = {
+          page
         };
         break stepTriage;
     }

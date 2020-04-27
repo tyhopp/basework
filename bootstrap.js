@@ -34,9 +34,11 @@ const bootstrap = async () => {
 
     // Check if step exists in Basework core
     if (fs.existsSync(path.resolve(__dirname, step))) {
-      if (step === 'prepare') {
-        await require(path.resolve(__dirname, step))[step]();
-        continue buildLoop;
+      switch (step) {
+        case 'prepare':
+        case 'bundle':
+          await require(path.resolve(__dirname, step))[step]();
+          continue buildLoop;
       }
       await runBaseworkStep(step);
       continue buildLoop;
