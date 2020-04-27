@@ -3,21 +3,36 @@ const fs = require('fs');
 const parser = require('@babel/parser');
 const traverse = require('@babel/traverse').default;
 const generate = require('@babel/generator').default;
-const { pages } = require(path.resolve('src/routes'));
 
-const getPageJavaScript = page => {
+const getPageJavaScript = pathToPage => {
+  if (!pathToPage) {
+    return null;
+  }
   return new Promise((resolve, reject) => {
-    fs.readFile(path.resolve(`src/pages/${page}/index.js`), (error, js) => {
+    fs.readFile(pathToPage, (error, js) => {
       if (error) {
         reject(error)
       }
-      resolve(js);
+      resolve(js.toString());
     });
   });
 }
 
-const parsePrefetchMethod = async (page, buffer) => {
-  const code = buffer.toString();
+const checkPrefetch = page => {
+  return new Promise((resolve, reject) => {
+    fs.exists(`${path.resolve('dist')}/${page}-prefetch.js`, (flag, error) => {
+      if (error) {
+        reject(error);
+      }
+      resolve(flag);
+    });
+  })
+}
+
+const parsePrefetchMethod = async (page, code) => {
+  if (!page || !code) {
+    return false;
+  }
 
   const createAst = async () => parser.parse(code, {
     sourceType: 'module',
@@ -44,45 +59,47 @@ const parsePrefetchMethod = async (page, buffer) => {
     }
   });
 
-  // Ensure fetch file exists
-  const ensureExistance = async () => {
-    const targetPath = `${path.resolve('dist')}/${page}-prefetch.js`;
-    if (!fs.existsSync(targetPath)) {
-      const requireStatement = `const fetch = require('node-fetch');`;
-      const fnName = page.replace(/[-_]/, '');
-      const assignBlock = `const ${fnName}Prefetch = () => `;
-      const exportStatement = `module.exports = ${fnName}Prefetch;`;
-      const code = `Promise.resolve({});`;
-      const final = `${requireStatement}\n\n${assignBlock}${code}\n\n${exportStatement}`;
-      fs.writeFileSync(targetPath, final);
-    }
-  }
-
   const ast = await createAst();
   await traverseTree(ast);
-  await ensureExistance();
+  const shouldPrefetch = await checkPrefetch();
+  return shouldPrefetch;
 }
 
-const createDataFile = page => {
+const makePrefetch = page => {
+  return require(`${path.resolve('dist')}/${page}-prefetch.js`)();
+}
+
+const createDataFile = (page, data) => {
   return new Promise((resolve, reject) => {
-    require(`${path.resolve('dist')}/${page}-prefetch.js`)().then(data => {
-      fs.writeFile(`${path.resolve('dist')}/${page}-data.json`, JSON.stringify(data), error => {
-        if (error) {
-          reject(error)
-        }
-        console.log(`Prefetched ${page} data`);
-        resolve();
-      });
+    fs.writeFile(`${path.resolve('dist')}/${page}-data.json`, JSON.stringify(data), error => {
+      if (error) {
+        reject(error)
+      }
+      console.log(`Prefetched ${page} data`);
+      resolve();
     });
   });
 }
 
-const prefetch = async () => {
-  for (const page of pages) {
-    const buffer = await getPageJavaScript(page);
-    await parsePrefetchMethod(page, buffer);
-    await createDataFile(page);
-  };
+const prefetch = async ({ page, pathToPage, data = null }) => {
+  
+  // If data is passed, create data file and return
+  if (data) {
+    await createDataFile(page, data);
+    return;
+  }
+
+  // Otherwise, ry to run compiler and run prefetch code
+  const code = await getPageJavaScript(pathToPage);
+  const shouldPrefetch = await parsePrefetchMethod(page, code);
+  if (shouldPrefetch) {
+    const data = await makePrefetch(page);
+    await createDataFile(page, data);
+    return;
+  }
+
+  // If all else fails, create an empty data file
+  await createDataFile(page, {});
 }
 
 module.exports = {
