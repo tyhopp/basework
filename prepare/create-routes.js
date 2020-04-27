@@ -12,28 +12,11 @@ const fs = require('fs');
     });
   }
 
-  const createRouteObject = async pages => {
-    let routes = {};
-    
-    pages.forEach(page => {
-      const path = page === 'index' ? '/' : `/${page}`;
-      Object.defineProperty(routes, path, {
-        value: page,
-        writable: false,
-        enumerable: true
-      });
-    });
-
-    return routes;
-  }
-
-  const createRouteFile = (pages, routes) => {
+  const createRouteFile = routes => {
     const routesFile = `
       const routes = ${JSON.stringify(routes)};
-      const pages = ${JSON.stringify(pages)};
 
       module.exports = {
-        pages,
         routes
       }
     `;
@@ -50,8 +33,7 @@ const fs = require('fs');
 
   const createRoutes = async () => {
     let pages = await getPages();
-    let routes = await createRouteObject(pages);
-    await createRouteFile(pages, routes);
+    await createRouteFile(pages);
     
     console.log('Routes created');
     return routes;
