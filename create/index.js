@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const { createPage } = require('./create-page');
-const { pages } = require(path.resolve('src/routes'));
 
 const getTemplate = template => {
   return new Promise((resolve, reject) => {
@@ -26,18 +25,20 @@ const createFile = (page, html) => {
   });
 }
 
-// Create pages
-const create = async () => {
-  for (const page of pages) {
+const create = async ({ page, assets = [] }) => {
+  const template = await getTemplate('base.html');
+
+  // Use passed assets if they exist
+  let finalAssets = assets;
+
+  // If they don't, get them directly from webpack.stats.js
+  if (!finalAssets.length) {
     const groups = require(path.resolve('dist/webpack.stats.js')).stats;
-    if (!groups[page]) {
-      console.error(`No webpack stats found for ${page}`);
-    }
-    const assets = groups[page];
-    const template = await getTemplate('base.html');
-    const html = await createPage(template, assets);
-    await createFile(page, html);
+    finalAssets = groups[page];
   }
+
+  const html = await createPage(template, finalAssets);
+  await createFile(page, html);
 }
 
 module.exports = {

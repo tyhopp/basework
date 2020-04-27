@@ -14,6 +14,7 @@ const runBaseworkStep = async (step) => {
         };
         break stepTriage;
       case 'transform':
+      case 'create':
         arguments = {
           page
         };

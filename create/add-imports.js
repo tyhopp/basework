@@ -4,6 +4,10 @@ const visit = require('unist-util-visit');
 
 // Visit the unist tree and add meta tags
 const addImports = ({ assets }) => tree => {
+  if (!assets || !assets.length) {
+    return;
+  }
+  
   visit(
     tree,
     node => {
