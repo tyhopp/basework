@@ -89,7 +89,7 @@ const prefetch = async ({ page, source, data = null }) => {
     return;
   }
 
-  // Otherwise, ry to run compiler and run prefetch code
+  // Otherwise, try to run compiler and run prefetch code
   const code = await getPageJavaScript(source);
   const shouldPrefetch = await parsePrefetchMethod(page, code);
   if (shouldPrefetch) {
