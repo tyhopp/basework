@@ -25,11 +25,11 @@ const createFile = (page, html) => {
   });
 }
 
-const create = async ({ page, assets = {} }) => {
+const create = async ({ page, assetIndex }) => {
   const template = await getTemplate('base.html');
   const groups = require(path.resolve('dist/webpack.stats.js')).stats;
-  const assetsFromStats = groups[page];
-  const html = await createPage(template, { ...assets, ...assetsFromStats });
+  const assets = groups[assetIndex ? assetIndex : page];
+  const html = await createPage(template, assets);
   await createFile(page, html);
 }
 

@@ -1,7 +1,7 @@
 const path = require('path');
 
 const runBaseworkStep = async (step) => {
-  const { pages } = require(path.resolve('./src/basework-index.js'));
+  const pages = await require(path.resolve('./src/basework-index.js')).getPages();
   stepLoop: for (const page of pages) {
     let arguments = {};
 

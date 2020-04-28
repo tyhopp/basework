@@ -12,12 +12,12 @@ const fs = require('fs');
     });
   }
 
-  const createPageIndexFile = pages => {
+  const createBaseworkIndexFile = pages => {
     const pageIndexFile = `
-      const pages = ${JSON.stringify(pages)};
+      const getPages = async () => ${JSON.stringify(pages)};
 
       module.exports = {
-        pages
+        getPages
       }
     `;
 
@@ -31,12 +31,12 @@ const fs = require('fs');
     });
   }
 
-  const createPageIndex = async () => {
+  const createBaseworkIndex = async () => {
     let pages = await getSourcePages();
-    await createPageIndexFile(pages);
+    await createBaseworkIndexFile(pages);
     console.log('Basework index created');
   }
 
 module.exports = {
-  createPageIndex
+  createBaseworkIndex
 }

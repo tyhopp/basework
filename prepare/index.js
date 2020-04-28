@@ -1,10 +1,10 @@
-const { createPageIndex } = require('./create-page-index');
+const { createBaseworkIndex } = require('./create-basework-index');
 
 /**
- * Does all the necessary preparation required for other build steps to run
+ * Does all the necessary preparation required for other build steps to run.
  */
 const prepare = async () => {
-  const pages = await createPageIndex();
+  const pages = await createBaseworkIndex();
   return pages;
 }
 

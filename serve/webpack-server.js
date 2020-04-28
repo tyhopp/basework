@@ -12,10 +12,34 @@ const { prefetch } = require(path.resolve(__dirname, '../prefetch'));
 const { transform } = require(path.resolve(__dirname, '../transform'));
 const { create } = require(path.resolve(__dirname, '../create'));
 const { extractStats } = require(path.resolve(__dirname, '../bundle/webpack/extract-stats'));
+const { getBaseworkConfig } = require(path.resolve(__dirname, '../utils/get-basework-config'));
+const { getBaseworkApis } = require(path.resolve(__dirname, '../utils/get-basework-apis'));
+
+const runAnyUserDefinedSteps = async () => {
+  let steps = [];
+  const { build } = await getBaseworkConfig();
+  if (build) {
+    steps = build;
+  }
+
+  buildLoop: for (const step of steps) {
+    // Check if step exists in user-defined Basework apis
+    const apis = await getBaseworkApis();
+    if (apis[step] && typeof apis[step] === 'function') {
+      await apis[step]();
+      continue buildLoop;
+    }
+  }
+}
 
 const getFile = file => {
   return new Promise((resolve, reject) => {
-    fs.readFile(path.resolve(`dist${file}`), (error, buffer) => {
+    const pathToFile = path.resolve(`dist${file}`);
+    if (!fs.existsSync(pathToFile)) {
+      console.warn(`Unable to access file at ${pathToFile}`);
+      return;
+    }
+    fs.readFile(pathToFile, (error, buffer) => {
       if (error || !buffer) {
         reject(error);
       }
@@ -24,19 +48,39 @@ const getFile = file => {
   });
 }
 
-const getHtml = async (url, response) => {
-  dotenv.config();
-  await prepare();
-  await prefetch();
-  await transform();
+const ensureJsonExists = async url => {
+  if (!path.resolve(`dist/${url}`)) {
+    const page = /\/(.*)-data\.json/.exec(url)[1];
+    await prefetch({
+      page,
+      source: path.resolve(`./src/pages/${page}/index.js`)
+    });
+    await transform({ page });
+  }
+}
+
+const getJson = async (url, response) => {
+  await ensureJsonExists(url);
+  const file = await getFile(url, response)
+  response.send(file);
+}
+
+const getHtml = async (page, response) => {
   const { compilation } = response.locals.webpackStats;
+  await prepare();
+  await prefetch({
+    page,
+    source: path.resolve(`./src/pages/${page}/index.js`)
+  });
+  await transform({ page });
   await extractStats(compilation);
-  await create();
-  return await getFile(url);
+  await create({ page });
+  return await getFile(`/${page}.html`, response);
 }
 
 const createWebpackServer = async () => {
   const config = await createWebpackConfig();
+  const pages = await require(path.resolve('src/basework-index')).getPages();
   const compiler = webpack(config);
 
   app.use(webpackDevMiddleware(compiler, {
@@ -46,33 +90,30 @@ const createWebpackServer = async () => {
   }));
 
   app.use((request, response) => {
-    const { routes } = require(path.resolve('src/routes'));
-    const { url } = request;
+    let { url } = request;
 
-    if (!fs.existsSync(path.resolve(`dist${url}`))) {
-      response.send('');
+    if (url.includes('json')) {
+      getJson(url, response);
       return;
     }
 
-    if (url.includes('json')) {
-      getFile(url)
-        .then(file => {
-          response.send(file);
-        })
-        .catch(error => {
-          console.error(`[Error] - Dev server encountered an error:\n${error}`);
-        })
+    if (url === '/') {
+      url = 'index';
+    } else {
+      url = url.substr(1);
     }
-
-    if (routes[url]) {
-      getHtml(`/${routes[url]}.html`, response).then(html => {
-        response.send(html);
-      });
+    if (!pages.some(validPage => validPage.includes(url))) {
+      url = 'not-found';
     }
-
+    getHtml(url, response).then(html => {
+      response.send(html);
+      return;
+    });
   });
 
   app.listen(8000, function () {
+    dotenv.config();
+    runAnyUserDefinedSteps();
     console.log('Basework dev server started at port 8000\n');
     // TODO - Open browser automatically
   });
