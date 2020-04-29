@@ -10,8 +10,8 @@ const createWebpackConfig = require(path.resolve(__dirname, '../bundle/webpack/w
 const { prepare } = require(path.resolve(__dirname, '../prepare'));
 const { prefetch } = require(path.resolve(__dirname, '../prefetch'));
 const { transform } = require(path.resolve(__dirname, '../transform'));
+const { bundle } = require(path.resolve(__dirname, '../bundle'));
 const { create } = require(path.resolve(__dirname, '../create'));
-const { extractStats } = require(path.resolve(__dirname, '../bundle/webpack/extract-stats'));
 const { getBaseworkConfig } = require(path.resolve(__dirname, '../utils/get-basework-config'));
 const { getBaseworkApis } = require(path.resolve(__dirname, '../utils/get-basework-apis'));
 
@@ -23,7 +23,6 @@ const runAnyUserDefinedSteps = async () => {
   }
 
   buildLoop: for (const step of steps) {
-    // Check if step exists in user-defined Basework apis
     const apis = await getBaseworkApis();
     if (apis[step] && typeof apis[step] === 'function') {
       await apis[step]();
@@ -49,7 +48,7 @@ const getFile = file => {
 }
 
 const ensureJsonExists = async url => {
-  if (!path.resolve(`dist/${url}`)) {
+  if (!fs.existsSync(path.resolve(`dist/${url}`))) {
     const page = /\/(.*)-data\.json/.exec(url)[1];
     await prefetch({
       page,
@@ -66,16 +65,24 @@ const getJson = async (url, response) => {
 }
 
 const getHtml = async (page, response) => {
-  const { compilation } = response.locals.webpackStats;
-  await prepare();
   await prefetch({
     page,
     source: path.resolve(`./src/pages/${page}/index.js`)
   });
   await transform({ page });
-  await extractStats(compilation);
   await create({ page });
   return await getFile(`/${page}.html`, response);
+}
+
+const startDevServer = async () => {
+  if (!fs.existsSync(path.resolve('./src/basework-index.js'))) {
+    await prepare();
+  }
+  if (!fs.existsSync(path.resolve('dist/webpack.stats.js'))) {
+    await bundle();
+  }
+  await runAnyUserDefinedSteps(); // TODO - Make this togglable via CLI arg
+  // TODO - Open browser automatically
 }
 
 const createWebpackServer = async () => {
@@ -113,9 +120,7 @@ const createWebpackServer = async () => {
 
   app.listen(8000, function () {
     dotenv.config();
-    runAnyUserDefinedSteps();
-    console.log('Basework dev server started at port 8000\n');
-    // TODO - Open browser automatically
+    startDevServer();
   });
 }
 
