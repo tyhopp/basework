@@ -4,7 +4,7 @@ const { createPage } = require('./create-page');
 
 const getTemplate = template => {
   return new Promise((resolve, reject) => {
-    fs.readFile(path.resolve(`src/${template}`), (error, html) => {
+    fs.readFile(path.resolve(template), (error, html) => {
       if (error) {
         reject(error)
       }
@@ -25,11 +25,11 @@ const createFile = (page, html) => {
   });
 }
 
-const create = async ({ page, assetIndex }) => {
-  const template = await getTemplate('base.html');
+const create = async ({ page, template, head, assetIndex }) => {
+  const htmlTemplate = await getTemplate(template ? template : 'src/base.html');
   const groups = require(path.resolve('dist/webpack.stats.js')).stats;
   const assets = groups[assetIndex ? assetIndex : page];
-  const html = await createPage(template, assets);
+  const html = await createPage(htmlTemplate, assets, head);
   await createFile(page, html);
 }
 
