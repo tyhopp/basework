@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const { markdownToHtml } = require('./markdown-to-html');
+const { highlightSyntax } = require('./highlight-syntax');
 
 const getPageData = page => {
   return new Promise((resolve, reject) => {
@@ -55,6 +56,21 @@ const performTransformations = data => {
           let ref = objectData;
           transformationPath.forEach((section, index) => {
             dig(ref, section, index, transformationPath, markdownToHtml);
+          });
+          objectData = ref;
+        });
+        break;
+      case 'highlight-syntax':
+        const highlightTransformations = transformationObject[key];
+        if (!highlightTransformations) {
+          return;
+        }
+        
+        highlightTransformations.forEach(item => {
+          const transformationPath = item.split('.');
+          let ref = objectData;
+          transformationPath.forEach((section, index) => {
+            dig(ref, section, index, transformationPath, highlightSyntax);
           });
           objectData = ref;
         });
