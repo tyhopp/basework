@@ -1,7 +1,7 @@
 {
   "name": "basework-core",
-  "version": "0.0.4",
-  "description": "An un-opinionated base framework for web projects",
+  "version": "0.1.0",
+  "description": "A flexible base framework for web projects",
   "author": "Ty Hopp",
   "main": "bootstrap.js",
   "scripts": {

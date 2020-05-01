@@ -40,6 +40,9 @@ There are two files you can add to the root of your project to change the defaul
 
 Find more information on what each build step does in the [build step notes](docs/build-steps.md).
 
+## Get invovled
+I can only take this project so far by myself. If you're excited by the ideas embedded here, please reach out [@doestyhopp](https://twitter.com/doestyhopp) on Twitter or open an issue here with an idea for improvement.
+
 ## Todos
 - [x] Fix relative paths pointing to target project
 - [x] Connect projects together locally with `npm pack` and `npm i`
@@ -51,11 +54,10 @@ Find more information on what each build step does in the [build step notes](doc
 - [x] Create an example project
 - [x] Add a license file
 - [x] Publish on npm
+- [x] Improve create pages function to support meta tags
 - [ ] Proper hot module replacement in the dev server
 - [ ] Webpack config differentiated by environment
-- [ ] Improve create pages function to support meta tags
 - [ ] Support parcel and rollup
-- [ ] Improve dev server
 
 ## Longer term goals
 - [ ] Create a single generalized dev server that works with any bundler
