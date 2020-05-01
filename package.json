@@ -1,8 +1,11 @@
 {
   "name": "basework-core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A flexible base framework for web projects",
   "author": "Ty Hopp",
+  "bugs": {
+    "url": "https://github.com/tyhopp/basework/issues"
+  },
   "main": "bootstrap.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -20,6 +23,7 @@
     "@babel/preset-env": "^7.8.4",
     "@mapbox/rehype-prism": "^0.4.0",
     "babel-loader": "^8.0.6",
+    "basework-cli": "^0.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.4.2",
     "dotenv": "^8.2.0",
