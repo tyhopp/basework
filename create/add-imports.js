@@ -95,13 +95,15 @@ const createMetaTags = ({ node, head }) => {
     }
     triage: switch(item) {
       case 'title':
-        createTitleTag(head[item]);
+        node.children.push(createTitleTag(head[item]));
         break triage;
       case 'url':
-        createMetaTag({
-          property: 'og:url',
-          content: head[item]
-        });
+        node.children.push(
+            createMetaTag({
+            property: 'og:url',
+            content: head[item]
+          })
+        );
         continue createLoop;
     }
     node.children.push(
