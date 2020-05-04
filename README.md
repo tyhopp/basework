@@ -55,8 +55,8 @@ I can only take this project so far by myself. If you're excited by the ideas em
 - [x] Add a license file
 - [x] Publish on npm
 - [x] Improve create pages function to support meta tags
+- [x] Webpack config differentiated by environment
 - [ ] Proper hot module replacement in the dev server
-- [ ] Webpack config differentiated by environment
 - [ ] Support parcel and rollup
 
 ## Longer term goals

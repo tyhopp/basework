@@ -6,7 +6,7 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const createWebpackConfig = require(path.resolve(__dirname, '../bundle/webpack/webpack-config'));
+const createWebpackConfig = require(path.resolve(__dirname, '../bundle/webpack/webpack-config-dev'));
 const { prepare } = require(path.resolve(__dirname, '../prepare'));
 const { prefetch } = require(path.resolve(__dirname, '../prefetch'));
 const { transform } = require(path.resolve(__dirname, '../transform'));

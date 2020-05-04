@@ -12,7 +12,7 @@ const bundle = async () => {
   }
   
   // Require bundler config and run command
-  let bundlerConfig = require(path.resolve(__dirname, `${bundler}/${bundler}-config`));
+  let bundlerConfig = require(path.resolve(__dirname, `${bundler}/${bundler}-config-prod`));
   const runBundler = require(path.resolve(__dirname, `${bundler}/run-${bundler}`));
   if (typeof bundlerConfig === 'function') {
     bundlerConfig = await bundlerConfig();

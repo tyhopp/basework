@@ -6,7 +6,6 @@ const path = require('path');
  */
 const createWebpackConfig = async () => {
   return {
-    mode: 'development', // TODO - Create different builds for different modes
     entry: {
       base: path.resolve('src/base.js')
     },
@@ -16,7 +15,6 @@ const createWebpackConfig = async () => {
       path: path.resolve('dist'), // Where to find assets
       publicPath: '/' // Where to serve assets
     },
-    devtool: 'inline-source-map', // Should be used for dev only,
     plugins: [
       new MiniCssExtractPlugin()
     ],
