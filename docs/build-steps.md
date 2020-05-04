@@ -53,5 +53,9 @@ The create step constructs the html files for each page. It checks what assets e
 ## Prerender
 The prerender step uses `jsdom` to run each of your pages ahead of time and updates the html pages after all the assets were loaded. For example, if one of your pages makes a fetch request, builds some DOM elements, and attaches them to the page, the end-state html file will include those DOM elements before any JS is loaded at runtime. This step allows your site to be used even when JavaScript is disabled in the browser and ensures search engine comprehensibility.
 
+The prerender step listens for a custom `basework-complete` event to be fired from your app. It's up to you to determine when to make the dispatch. A common place to fire it would be in your router. If you used the Basework generator, it's already set up for you in the router.
+
+Note - there may be APIs that `jsdom` doesn't cover, and in that case the best option is to open a PR with an appropriate shim.
+
 ## A note on custom build steps
 You can create a custom build step and make use of the `routes.js` file too, making Basework very flexible. However, be mindful of the order of the steps you define.
