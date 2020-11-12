@@ -20,9 +20,11 @@ const copyFiles = () => tree => {
           node.properties['href'] = `/${name}${ext}`;
         }
         if (node.properties['content']) {
-          node.properties['content'] = `/${name}${ext}`;
+          const origin = node.properties['origin'] || '';
+          node.properties['content'] = `${origin}/${name}${ext}`;
         }
         delete node.properties['copy'];
+        delete node.properties['origin'];
         return;
       }
     }
