@@ -1,6 +1,6 @@
 
 # Basework 🏗
-An un-opinionated base framework for web projects. See [why Basework](docs/why-basework.md) to be sold on the idea.
+An experimental base framework for web projects. See [why Basework](docs/why-basework.md) to be sold on the idea.
 
 🚨 Disclaimer - This project is in its early days. Do not use Basework in production.
 
@@ -40,26 +40,24 @@ There are two files you can add to the root of your project to change the defaul
 
 Find more information on what each build step does in the [build step notes](docs/build-steps.md).
 
+## Custom bundler configuration
+Basework tries to choose sensible defaults for bundlers. If you need more flexibility, you can add the following files to your project root to add custom configuration to your bundler:
+
+- `webpack-config.js` - base config used by environment specific configs (dev, prod, etc.)
+- `webpack-config-dev.js` - config used in development (when running `basework start`)
+- `webpack-config-prod.js` - config used in production (when running `basework build`)
+
+These files must export an object or funtion like a normal webpack config.
+
 ## Get invovled
-I can only take this project so far by myself. If you're excited by the ideas embedded here, please reach out [@doestyhopp](https://twitter.com/doestyhopp) on Twitter or open an issue here with an idea for improvement.
+This project is mostly a sandbox for new ideas and concepts. If you'd like to collaborate, feel free to open an issue in this repo!
 
 ## Todos
-- [x] Fix relative paths pointing to target project
-- [x] Connect projects together locally with `npm pack` and `npm i`
-- [x] Create basic CLI
-- [x] Extract out any remaining target project-specific logic
-- [x] Consume `basework-config.js` from projects
-- [x] Consume `basework-api.js` from projects
-- [x] Refactor dev server for basic functionality
-- [x] Create an example project
-- [x] Add a license file
-- [x] Publish on npm
-- [x] Improve create pages function to support meta tags
-- [x] Webpack config differentiated by environment
-- [ ] Proper hot module replacement in the dev server
-- [ ] Support parcel and rollup
+- [ ] Proper hot module replacement in the dev server - [impossible with current custom element spec](https://github.com/WICG/webcomponents/issues/829)
 
 ## Longer term goals
+- [ ] Merge all Basework repos into a single monorepo
+- [ ] Support parcel and rollup
 - [ ] Create a single generalized dev server that works with any bundler
 - [ ] Reduce dependency vulnerabilities to zero
 - [ ] Add unit and integration tests
