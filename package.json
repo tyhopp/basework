@@ -40,9 +40,9 @@
     "remark-rehype": "^5.0.0",
     "unified": "^8.4.2",
     "unist-util-visit": "^2.0.2",
-    "webpack": "^4.41.6",
+    "webpack": "^4.44.2",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3",
+    "webpack-dev-server": "^3.11.0",
     "webpack-merge": "^4.2.2"
   }
 }
